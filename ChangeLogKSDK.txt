@@ -1,0 +1,18 @@
+/*!
+@page middleware_log Middleware Change Log
+
+@section lin stack LIN STACK
+  The current driver version is 2.1.0.
+
+  - 2.1.0
+ 	- Bug Fixes
+ 	  - Fixed bug that for lin slave once break field is detected before completing the last frame no error status is
+        raised, by adding enum LIN_LAST_RESPONSE_SHORT_ERROR to protocol specification and adding
+        LIN_LLD_LAST_RESPONSE_SHORT_ERR to low level event id, and once last frame too shorted is detected response
+        error is raised.
+      - Fixed bug that for LIN2.1, the response error signal is not updated once error is detected in slave node.
+      - Fixed bug that when frame ID is 0x3D the PID should be 0x7D rather than 0x3D.
+
+  - 2.0.0
+    - Initial version.
+*/
