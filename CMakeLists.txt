@@ -16,7 +16,9 @@ if(CONFIG_MCUX_COMPONENT_middleware.lin_stack)
                 include/lin_commontl_api.h
                 include/lin_diagnostic_service.h
                 include/lin_types.h
+                include/lin_driver.h
                 lowlevel/lin.c
+                lowlevel/lin_driver.c
                 transport/lin_commontl_api.c
                 transport/lin_commontl_proto.c
                 transport/lin_commontl_proto.h

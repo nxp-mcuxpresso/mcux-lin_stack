@@ -5,5 +5,5 @@ menu "lin_stack"
 
     config MCUX_COMPONENT_middleware.lin_stack
         bool "Component middleware.lin_stack"
-        select MCUX_COMPONENT_driver.lin_stack
+        select MCUX_COMPONENT_driver.lin_lpuart
 endmenu
