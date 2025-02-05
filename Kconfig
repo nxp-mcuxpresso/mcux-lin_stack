@@ -1,9 +1,6 @@
 # Copyright 2024 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 
-menu "lin_stack"
-
-    config MCUX_COMPONENT_middleware.lin_stack
-        bool "Component middleware.lin_stack"
-        select MCUX_COMPONENT_driver.lin_lpuart
-endmenu
+config MCUX_COMPONENT_middleware.lin_stack
+    bool "LIN stack"
+    select MCUX_COMPONENT_driver.lin_lpuart
