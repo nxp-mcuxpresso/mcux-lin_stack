@@ -1,0 +1,35 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2025-05-29T06:11:55Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.20"
+  },
+  "name": "mcux-lin_stack-v25.06.00",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://nxp.com/spdx/85cf6b6e-c90c-49b1-a252-afbe2280f404",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-85cf6b6e-c90c-49b1-a252-afbe2280f404",
+      "name": "mcux-lin_stack",
+      "versionInfo": "v25.06.00",
+      "licenseConcluded": "(BSD-3-Clause)",
+      "licenseDeclared": "(BSD-3-Clause)",
+      "downloadLocation": "https://github.com/nxp-mcuxpresso/mcux-lin_stack",
+      "originator": "Organization: NXP",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-85cf6b6e-c90c-49b1-a252-afbe2280f404"
+    }
+  ]
+}
