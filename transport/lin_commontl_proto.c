@@ -931,7 +931,14 @@ static void lin_tl_get_response(l_ifc_handle iii)
     }
     else
     {
-        sci = (l_u8)(sci - 0x40U);
+        if (sci >= 0x40U)
+        {
+            sci = (l_u8)(sci - 0x40U);
+        }
+        else
+        {
+            sci = 0U;
+        }
         /* Check the result of service */
         switch (sci)
         {
@@ -1281,6 +1288,11 @@ static void tl_receive_message(l_ifc_handle iii)
                 if (i < tmp_length)
                 {
                     tmp_length = i;
+                }
+
+                if (tmp_length > 6U)
+                {
+                    tmp_length = 6U;
                 }
 
                 data[0] = pdu[2];

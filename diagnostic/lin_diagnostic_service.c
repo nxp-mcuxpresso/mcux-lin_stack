@@ -361,11 +361,14 @@ static void lin_diagservice_assign_frame_id_range(l_ifc_handle iii)
     i = 1U;
     while (0xFFFFU != (prot_user_config_ptr->list_identifiers_ROM_ptr)[i++])
     {
-        cfg_frame_num++;
+        if (cfg_frame_num < 0xFFU)
+        {
+            cfg_frame_num++;
+        }
     }
 
     /* Calculate number of configurable frames */
-    cfg_frame_num = (l_u8)(cfg_frame_num - 3U);
+    cfg_frame_num = (cfg_frame_num >= 3U) ? (l_u8)(cfg_frame_num - 3U) : 0U;
 
     i = 4U;
     /* Check request validity */

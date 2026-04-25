@@ -45,7 +45,7 @@ void ld_init(l_ifc_handle iii)
     static lin_product_id_t product_id_data[LIN_NUM_OF_IFCS];
     lin_tl_descriptor_t *tl_desc_ptr = &g_lin_tl_descriptor_array[iii];
     l_u16 length = g_lin_protocol_user_cfg_array[iii].max_message_length;
-    l_u8 max_queue_size;
+    l_u16 max_queue_size;
 
     /* Calculate max_queue_size from max_message_length */
     if (length <= 6U)
@@ -56,11 +56,11 @@ void ld_init(l_ifc_handle iii)
     {
         if (((length - 5U) % 6U) == 0U)
         {
-            max_queue_size = (l_u8)(((length - 5U) / 6U) + 1U);
+            max_queue_size = (((length - 5U) / 6U) + 1U);
         }
         else
         {
-            max_queue_size = (l_u8)(((length - 5U) / 6U) + 2U);
+            max_queue_size = (((length - 5U) / 6U) + 2U);
         }
     }
 
@@ -141,8 +141,14 @@ void ld_put_raw(l_ifc_handle iii, const l_u8 *const data)
 
     /* Get transmit queue */
     tl_queue = &(tl_desc_ptr->tl_tx_queue);
-    tl_desc_ptr->tx_msg_size++;
-    tl_desc_ptr->slave_resp_cnt++;
+    if (tl_desc_ptr->tx_msg_size < (l_u16)0xFFFFU)
+    {
+        tl_desc_ptr->tx_msg_size++;
+    }
+    if (tl_desc_ptr->slave_resp_cnt < (l_u8)0xFFU)
+    {
+        tl_desc_ptr->slave_resp_cnt++;
+    }
     tl_put_raw(iii, data, tl_queue, TRANSMITTING);
 }
 
@@ -209,7 +215,7 @@ void ld_send_message(l_ifc_handle iii, l_u16 length, l_u8 NAD, const l_u8 *const
 
     lin_tl_pdu_data_t pdu;
     l_u8 i;
-    l_u8 message_size;
+    l_u16 message_size;
     l_u16 data_index = 0U;
     l_u16 tmp_length = length;
     l_u16 frame_counter = 0U;
@@ -228,11 +234,11 @@ void ld_send_message(l_ifc_handle iii, l_u16 length, l_u8 NAD, const l_u8 *const
         {
             if (((length - 5U) % 6U) == 0U)
             {
-                message_size = (l_u8)(((length - 5U) / 6U) + 1U);
+                message_size = (((length - 5U) / 6U) + 1U);
             }
             else
             {
-                message_size = (l_u8)(((length - 5U) / 6U) + 2U);
+                message_size = (((length - 5U) / 6U) + 2U);
             }
         }
 
@@ -323,7 +329,10 @@ void ld_send_message(l_ifc_handle iii, l_u16 length, l_u8 NAD, const l_u8 *const
 #endif /* End (SUPPORT_SLAVE_MODE == 1U) */
                 while (message_size > 0U)
                 {
-                    frame_counter++;
+                    if (frame_counter < (l_u16)0xFFFFU)
+                    {
+                        frame_counter++;
+                    }
                     pdu[1] = (l_u8)(0x20U | (frame_counter & 0x0FU));
                     if (tmp_length < 6U)
                     {
@@ -332,7 +341,10 @@ void ld_send_message(l_ifc_handle iii, l_u16 length, l_u8 NAD, const l_u8 *const
                         for (i = 0U; i < tmp_length; i++)
                         {
                             pdu[i + 2U] = data[data_index];
-                            data_index++;
+                            if (data_index < (l_u16)0xFFFFU)
+                            {
+                                data_index++;
+                            }
                         }
 
                         /* unused data */
@@ -346,7 +358,10 @@ void ld_send_message(l_ifc_handle iii, l_u16 length, l_u8 NAD, const l_u8 *const
                         for (i = 2U; i < 8U; i++)
                         {
                             pdu[i] = data[data_index];
-                            data_index++;
+                            if (data_index < (l_u16)0xFFFFU)
+                            {
+                                data_index++;
+                            }
                         }
 
                         tmp_length -= 6U;

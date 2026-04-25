@@ -134,7 +134,7 @@ static void lin_process_id(l_ifc_handle iii, l_u8 id)
                     /* Update transmit flags */
                     for (i = 0U; i < flag_size; i++)
                     {
-                        if (g_lin_flag_handle_tbl[flag_offset++] != 0xFFU)
+                        if (g_lin_flag_handle_tbl[flag_offset + i] != 0xFFU)
                         {
                             /* Frame is updated */
                             lin_make_res_evnt_frame(
@@ -279,8 +279,7 @@ static void lin_update_rx(l_ifc_handle iii, l_u8 id)
             flag_size   = prot_user_config_ptr->frame_tbl_ptr[frame_index].flag_size;
             for (i = 0U; i < flag_size; i++)
             {
-                g_lin_flag_handle_tbl[flag_offset] = 0xFFU;
-                flag_offset++;
+                g_lin_flag_handle_tbl[flag_offset + i] = 0xFFU;
             }
         }
 #if (SUPPORT_MASTER_MODE == 1U)
@@ -638,7 +637,7 @@ l_u8 lin_check_sporadic_update(l_ifc_handle iii, l_u8 frm_id)
         /* Update transmit flags */
         for (i = 0U; i < flag_size; i++)
         {
-            if (g_lin_flag_handle_tbl[flag_offset++] != 0xFFU)
+            if (g_lin_flag_handle_tbl[flag_offset + i] != 0xFFU)
             {
                 retVal = prot_user_config_ptr->list_identifiers_RAM_ptr[((l_u8)ptr->associated_uncond_frame_ptr[j] -
                                                                          prot_user_config_ptr->frame_start) +
@@ -697,8 +696,7 @@ static void lin_update_tx_flags(l_ifc_handle iii, l_u8 frm_id)
         /* Update transmit flags */
         for (i = 0U; i < flag_size; i++)
         {
-            g_lin_flag_handle_tbl[flag_offset] = 0xFFU;
-            flag_offset++;
+            g_lin_flag_handle_tbl[flag_offset + i] = 0xFFU;
         }
     }
 }

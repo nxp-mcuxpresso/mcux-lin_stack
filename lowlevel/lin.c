@@ -209,8 +209,10 @@ l_u8 lin_lld_tx_header(l_ifc_handle iii, l_u8 id)
     lin_hardware_instance = g_lin_virtual_ifc[iii];
 
     /* Set correct frame timeout */
-    prot_state_ptr->frame_timeout_cnt =
-        (l_u16)(s_lin_max_frame_res_timeout_val[iii][7] + s_lin_max_header_timeout[iii]);
+    {
+        l_u32 timeout_sum = (l_u32)s_lin_max_frame_res_timeout_val[iii][7] + (l_u32)s_lin_max_header_timeout[iii];
+        prot_state_ptr->frame_timeout_cnt = (timeout_sum > 0xFFFFU) ? (l_u16)0xFFFFU : (l_u16)timeout_sum;
+    }
 
     /* Send frame header */
     retVal = (l_u8)LIN_DRV_MasterSendHeader(lin_hardware_instance, id);
@@ -444,7 +446,7 @@ void lin_lld_timeout_service(l_ifc_handle iii)
     switch (linState.currentNodeState)
     {
         case LIN_NODE_STATE_IDLE:
-            if (!(prot_state_ptr->idle_timeout_cnt-- > 0U))
+            if (prot_state_ptr->idle_timeout_cnt == 0U)
             {
                 /* Callback to handle timeout */
                 CALLBACK_HANDLER(iii, LIN_LLD_BUS_ACTIVITY_TIMEOUT, 0xFFU);
@@ -454,6 +456,10 @@ void lin_lld_timeout_service(l_ifc_handle iii)
 
                 /* Put current node to sleep mode */
                 (void)LIN_DRV_GoToSleepMode(lin_hardware_instance);
+            }
+            else
+            {
+                prot_state_ptr->idle_timeout_cnt--;
             }
             /* Re-calculate s_lin_max_header_timeout and s_lin_max_frame_res_timeout_val */
             if (s_baudrate_adjusted_flg[iii])
@@ -474,7 +480,7 @@ void lin_lld_timeout_service(l_ifc_handle iii)
         case LIN_NODE_STATE_RECV_PID:
         case LIN_NODE_STATE_SEND_PID:
             /* timeout send has occurred - change state of the node and inform core */
-            if (!(prot_state_ptr->frame_timeout_cnt-- > 0U))
+            if (prot_state_ptr->frame_timeout_cnt == 0U)
             {
                 /* Go to idle state */
                 (void)LIN_DRV_GotoIdleState(lin_hardware_instance);
@@ -482,16 +488,24 @@ void lin_lld_timeout_service(l_ifc_handle iii)
                 /* Reset frame count timeout */
                 prot_state_ptr->frame_timeout_cnt = s_lin_max_frame_res_timeout_val[iii][7U];
             }
+            else
+            {
+                prot_state_ptr->frame_timeout_cnt--;
+            }
             break;
         case LIN_NODE_STATE_SEND_DATA:
             /* timeout send has occurred - change state of the node and inform core */
-            if (!(prot_state_ptr->frame_timeout_cnt-- > 0U))
+            if (prot_state_ptr->frame_timeout_cnt == 0U)
             {
                 /* Abort frame data transferring */
                 (void)LIN_DRV_AbortTransferData(lin_hardware_instance);
 
                 /* Reset frame count timeout */
                 prot_state_ptr->frame_timeout_cnt = s_lin_max_frame_res_timeout_val[iii][7U];
+            }
+            else
+            {
+                prot_state_ptr->frame_timeout_cnt--;
             }
             break;
         case LIN_NODE_STATE_UNINIT:
@@ -560,8 +574,10 @@ static void CallbackHandler(uint32_t instance, void *linState)
             CALLBACK_HANDLER(iii, (event_id), (id));
             break;
         case LIN_RECV_BREAK_FIELD_OK:
-            prot_state_ptr->frame_timeout_cnt =
-                (l_u16)(s_lin_max_frame_res_timeout_val[iii][7U] + s_lin_max_header_timeout[iii]);
+            {
+                l_u32 timeout_sum = (l_u32)s_lin_max_frame_res_timeout_val[iii][7U] + (l_u32)s_lin_max_header_timeout[iii];
+                prot_state_ptr->frame_timeout_cnt = (timeout_sum > 0xFFFFU) ? (l_u16)0xFFFFU : (l_u16)timeout_sum;
+            }
             break;
         case LIN_SYNC_ERROR:
 #if (SUPPORT_PROTOCOL_J2602 == 1U)
