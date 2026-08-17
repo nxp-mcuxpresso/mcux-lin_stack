@@ -260,9 +260,6 @@ static void lin_condittional_change_nad(l_ifc_handle iii)
                     case 4U:
                         byte = serial_number.serial_3;
                         break;
-                    default:
-                        /* Do nothing */
-                        break;
                 }
 
                 /* Do a bitwise XOR with Invert and Do a bitwise AND with Mask */
@@ -487,8 +484,7 @@ l_u8 ld_set_configuration(l_ifc_handle iii, const l_u8 *const data, l_u16 length
     DEV_ASSERT(data != NULL);
 
     l_u8 i;
-    /* Set the default returned value to LD_DATA_ERROR */
-    l_u8 retval = LD_DATA_ERROR;
+    l_u8 retval;
     const lin_node_attribute_t *node_attr_ptr;
     const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     /** Set the expected length value to

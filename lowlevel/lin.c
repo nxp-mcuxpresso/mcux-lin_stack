@@ -88,7 +88,7 @@ l_bool lin_lld_init(l_ifc_handle iii)
 
     l_u32 lin_hardware_instance;
     l_u8 index;
-    l_u8 ret_val                                           = (l_u8)LIN_LLD_ERROR;
+    l_u8 ret_val;
     const lin_protocol_user_config_t *prot_user_config_ptr = &g_lin_protocol_user_cfg_array[iii];
     lin_protocol_state_t *prot_state_ptr                   = &g_lin_protocol_state_array[iii];
     static l_u8 lin_lld_response_buffer[LIN_NUM_OF_IFCS][10];
@@ -156,7 +156,7 @@ l_u8 lin_lld_deinit(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -203,7 +203,7 @@ l_u8 lin_lld_tx_header(l_ifc_handle iii, l_u8 id)
 
     l_u32 lin_hardware_instance;
     lin_protocol_state_t *prot_state_ptr = &g_lin_protocol_state_array[iii];
-    l_u8 retVal                          = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -237,7 +237,7 @@ l_u8 lin_lld_tx_wake_up(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -265,7 +265,7 @@ l_u8 lin_lld_int_enable(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -288,7 +288,7 @@ l_u8 lin_lld_int_disable(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -311,7 +311,7 @@ l_u8 lin_lld_ignore_response(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
@@ -334,7 +334,7 @@ l_u8 lin_lld_set_low_power_mode(l_ifc_handle iii)
     DEV_ASSERT((l_u8)iii < LIN_NUM_OF_IFCS);
 
     l_u32 lin_hardware_instance;
-    l_u8 retVal = (l_u8)LIN_LLD_ERROR;
+    l_u8 retVal;
 
     /* Get the LIN hardware instance number */
     lin_hardware_instance = g_lin_virtual_ifc[iii];
